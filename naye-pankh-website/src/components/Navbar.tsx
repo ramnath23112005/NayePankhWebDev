@@ -32,12 +32,28 @@ export default function Navbar({ isDark, toggleDark }: Props) {
   }, []);
 
   useEffect(() => {
+    const scrollY = window.scrollY;
     if (isOpen) {
-      document.body.classList.add('mobile-menu-open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
     } else {
-      document.body.classList.remove('mobile-menu-open');
+      const top = parseInt(document.body.style.top || '0', 10) * -1;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (top) window.scrollTo(0, top);
     }
-    return () => document.body.classList.remove('mobile-menu-open');
+    return () => {
+      const top = parseInt(document.body.style.top || '0', 10) * -1;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (top) window.scrollTo(0, top);
+    };
   }, [isOpen]);
 
   return (
