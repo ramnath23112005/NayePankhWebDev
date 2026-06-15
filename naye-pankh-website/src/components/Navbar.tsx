@@ -31,6 +31,15 @@ export default function Navbar({ isDark, toggleDark }: Props) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('mobile-menu-open');
+    } else {
+      document.body.classList.remove('mobile-menu-open');
+    }
+    return () => document.body.classList.remove('mobile-menu-open');
+  }, [isOpen]);
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -81,6 +90,7 @@ export default function Navbar({ isDark, toggleDark }: Props) {
           <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={toggleDark}
+              aria-label="Toggle dark mode"
               className={`p-2 rounded-lg transition-colors ${
                 scrolled || isDark
                   ? 'text-neutral-600 dark:text-neutral-300'
@@ -91,6 +101,7 @@ export default function Navbar({ isDark, toggleDark }: Props) {
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
               className={`p-2 rounded-lg transition-colors ${
                 scrolled || isDark
                   ? 'text-neutral-700 dark:text-neutral-200'
